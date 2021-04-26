@@ -66,7 +66,27 @@ matrix:
     - cmake -DBUILD_JAVA=OFF -DOPENSSL_ROOT_DIR=`brew --prefix openssl` ..
     - travis_wait 35 make package test-out
     
-     # including ppc64le  
+     # including ppc64le
+  - language: java
+    jdk: openjdk11
+    env:
+    - MAVEN_OPTS=-Xmx2g MAVEN_SKIP_RC=true
+    script:
+    - cd java
+    - mvn -Panalyze clean package
+    - mvn apache-rat:check
+  # including ppc64le  
+  - language: java
+    arch: ppc64le
+    jdk: openjdk11
+    env:
+    - MAVEN_OPTS=-Xmx2g MAVEN_SKIP_RC=true
+    script:
+    - cd java
+    - mvn -Panalyze clean package
+    - mvn apache-rat:check  
+     
+     
   - language: java
     arch: ppc64le
     jdk: openjdk8
